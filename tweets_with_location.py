@@ -1,5 +1,5 @@
 from random import randrange
-
+import json
 ny = [(40.8448, -73.8648), (40.6782, -73.9442), (40.7282, -73.7949), (40.7831, -73.9712), (40.712776, -74.005974), (40.8448, -73.8648), (40.7891, -73.1350), (40.7128, -74.0060)]
 staten_island = [(40.5795, 74.1502), (40.5083, -74.2355), (40.5790, 74.1500), (40.643501, -74.076202), (40.6424, -74.076036)]
 matawan = [(40.4148, -74.2296)]
@@ -701,6 +701,44 @@ tweets_lst = [{
 	"body": " It would really mean a lot to me if you guys donated a lil cash to help a family in need after Hurricane Sandy http://t.co/3WYCGdgR",
 	"timestamp": "29 Oct 2012"
 }]
+foodWater = ["food","storing","medicine", "canned", "sandwiches",
+      "soup", "hot food", "cat", "dog", "water", "dinner", "meals needed",
+      "thanksgiving", "Thanksgiving"]
+power = ["#nopower", "power", "electricity", "lights",
+      "blackout", "current", "flash", "batteries", "lantern",
+      "flashlight", "candle", "dark"]
+donations = ["#donations", "donations", "financial", "relief",
+      "cash", "savings", "http", "donate", "fund", "supplies", "$",
+      "drive", "money", "charity", "aid", "volunteer", "shelter",
+      "contact"]
+stranded = ["house", "transportation", "first", "responders",
+      "red cross", "displaced", "pets", "reunite", "adopted", "flooded",
+      "flooding", "basement", "evacuate", "evacuation", "homeless",
+      "destroyed", "boats", "trucks", "ruined", "breaking", "no", "home",
+      "block"]
+clothes = ["underwear", "clothing", "clothes"]
+helpWebsites = ["http", "contact", "Contact"]
+
+for yeet in tweets_lst:
+	tweet = yeet["body"]
+	split = tweet.split(" ")
+	category = "undefined"
+	print(split)
+	for word in split:
+		word = word.lower()
+		if word in foodWater:
+			category = "food/water"
+		elif word in power:
+			category = "power"
+		elif word in donations:
+			category = "donations"
+		elif word in stranded:
+			category = "stranded"
+		elif word in clothes:
+			category = "clothes"
+		elif word in "helpWebsites":
+			category = "helpWebsites"
+	yeet["category"] = category
 
 for tweet in tweets_lst:
     if "statten island" in tweet["body"].lower() or "staten island" in tweet["body"].lower() or "statenisland" in tweet["body"].lower():
@@ -719,6 +757,5 @@ for tweet in tweets_lst:
         lat, lng = rand[randrange(0, len(rand))]
     tweet["position"] = {"lat": lat, "lng": lng}
 
-print(tweets_lst)
-
-
+with open('data.json', 'w') as outfile:
+    json.dump(tweets_lst, outfile)
